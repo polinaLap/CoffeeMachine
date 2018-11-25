@@ -1,8 +1,11 @@
 package univ.lab;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import univ.lab.classes.domain.entities.CoffeeMachine;
+import univ.lab.classes.domain.entities.CoffeeParameters;
 import univ.lab.classes.domain.entities.CoffeeType;
-import univ.lab.classes.repository.CoffeeTypeDAO;
+import univ.lab.classes.repository.dao.CoffeeMachineDAO;
+import univ.lab.classes.repository.dao.CoffeeTypeDAO;
 
 /**
  * Hello world!
@@ -16,11 +19,14 @@ public class App
 
         //Get the EmployeeDAO Bean
         CoffeeTypeDAO coffeeTypeDAO = ctx.getBean("ICoffeeTypeDAO", CoffeeTypeDAO.class);
-
+        CoffeeMachineDAO coffeeMachineDAO = ctx.getBean("ICoffeeMachineDAO", CoffeeMachineDAO.class);
 
         //Read
         CoffeeType emp1 = coffeeTypeDAO.GetCoffeeType(1);
         System.out.println("Employee Retrieved::"+emp1.getWaterAmount()+" "+emp1.getMilkAmount()+" "+emp1.isWaterBeforeMilk());
+
+        CoffeeMachine emp = coffeeMachineDAO.GetCoffeeMachine(1);
+        System.out.println("Employee Retrieved::" +" "+emp.get_waterAmount()+" "+emp.get_sugarAmount());
 
         ctx.close();
 

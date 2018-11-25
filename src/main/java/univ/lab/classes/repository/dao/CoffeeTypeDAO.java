@@ -1,4 +1,4 @@
-package univ.lab.classes.repository;
+package univ.lab.classes.repository.dao;
 
 import univ.lab.classes.domain.entities.CoffeeType;
 import univ.lab.classes.domain.interfaces.ICoffeeTypeDAO;

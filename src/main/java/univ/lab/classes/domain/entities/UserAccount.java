@@ -1,18 +1,23 @@
 package univ.lab.classes.domain.entities;
 
-public class UserAccount {
-
+public class UserAccount
+{
+    private int _id;
     private double _money;
 
-    public UserAccount() {
+    public UserAccount(int id) {
         _money = 0;
+        _id = id;
     }
 
-    public void addMoney(double plusCash){
-        _money+=plusCash;
+    public int get_id() {
+        return _id;
     }
-    public void spendMoney(double minusCash){
-        _money-=minusCash;
+    public void addMoney(double plusCash) {
+        _money += plusCash;
+    }
+    public void spendMoney(double minusCash) {
+        _money -= minusCash;
     }
     public double get_money() {
         return _money;

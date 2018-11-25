@@ -4,12 +4,13 @@ import univ.lab.classes.domain.interfaces.ICoffee;
 
 public class CoffeeMachine {
 
-    private double _coffeeAmmount;
-    private double _milkAmmount;
-    private double _sugarAmmount;
-    private double _waterAmmount;
+    private int id;
+    private CoffeeParameters coffeeParameters;
 
-    public CoffeeMachine() {}
+    public CoffeeMachine( int id) {
+        this.id = id;
+        coffeeParameters = new CoffeeParameters();
+    }
 
     public ICoffee GetCoffee(CoffeeType type){
         if(!AbleToMake(type))
@@ -21,19 +22,34 @@ public class CoffeeMachine {
         return true;
     }
 
-    public void set_coffeeAmmount(double _coffeeAmmount) {
-        this._coffeeAmmount = _coffeeAmmount;
+    public int getId() {
+        return id;
     }
 
-    public void set_milkAmmount(double _milkAmmount) {
-        this._milkAmmount = _milkAmmount;
+    public void set_coffeeAmount(double _coffeeAmount) {
+        coffeeParameters.set_coffeeAmount(_coffeeAmount);
     }
 
-    public void set_sugarAmmount(double _sugarAmmount) {
-        this._sugarAmmount = _sugarAmmount;
+    public void set_milkAmount(double _milkAmount) {
+        coffeeParameters.set_milkAmount(_milkAmount);
     }
 
-    public void set_waterAmmount(double _waterAmmount) {
-        this._waterAmmount = _waterAmmount;
+    public void set_sugarAmount(double _sugarAmount) {
+        coffeeParameters.set_sugarAmount(_sugarAmount);
+    }
+
+    public void set_waterAmount(double _waterAmount) {
+        coffeeParameters.set_waterAmount(_waterAmount);
+    }
+
+    public double get_coffeeAmount() {
+        return coffeeParameters.get_coffeeAmount();
+    }
+    public double get_milkAmount() {
+        return coffeeParameters.get_milkAmount();
+    }public double get_sugarAmount() {
+        return coffeeParameters.get_sugarAmount();
+    }public double get_waterAmount() {
+        return coffeeParameters.get_waterAmount();
     }
 }
