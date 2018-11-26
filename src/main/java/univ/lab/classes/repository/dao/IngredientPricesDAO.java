@@ -23,7 +23,7 @@ public class IngredientPricesDAO implements IIngredientPricesDAO {
     }
 
     public ArrayList<Ingredient> getAllIngredients() {
-        ArrayList<Ingredient> result = null;
+        ArrayList<Ingredient> result = new ArrayList<Ingredient>();
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement st = null;;

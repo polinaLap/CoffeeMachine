@@ -1,18 +1,20 @@
 package univ.lab.classes.domain.entities;
 
 public class CoffeeType {
-    private int _Id;
+
+
+    private String _name;
     private double _coffeeAmount;
     private double _milkAmount;
     private double _waterAmount;
     private boolean _waterBeforeMilk;
 
-    public int getId() {
-        return _Id;
+    public String getName() {
+        return _name;
     }
 
-    public void setId(int _Id) {
-        this._Id = _Id;
+    public void setName(String _name) {
+        this._name = _name;
     }
 
     public double getCoffeeAmount() {

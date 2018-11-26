@@ -18,8 +18,14 @@ public class CoffeeMachine {
         return null;
     }
 
-    private boolean AbleToMake(CoffeeType type){
-        return true;
+    public boolean AbleToMakeAnyCoffee() {
+        return coffeeParameters.get_waterAmount() > 0 && coffeeParameters.get_coffeeAmount() > 0;
+    }
+
+    public  boolean AbleToMake(CoffeeType type) {
+        return coffeeParameters.get_coffeeAmount() > type.getCoffeeAmount()
+                && coffeeParameters.get_waterAmount() > type.getWaterAmount()
+                && coffeeParameters.get_milkAmount() > type.getMilkAmount();
     }
 
     public int getId() {
