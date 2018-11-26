@@ -5,5 +5,5 @@ import univ.lab.classes.domain.entities.CoffeeParameters;
 
 public interface ICoffeeMachineDAO {
     CoffeeMachine GetCoffeeMachine (int id);
-    boolean updateCoffeeMachine (int id, CoffeeParameters parameters);
+    boolean UpdateCoffeeMachine (int id, CoffeeParameters parameters);
 }

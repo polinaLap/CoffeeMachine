@@ -1,49 +1,47 @@
 package univ.lab.classes.repository.dao;
 
 import univ.lab.classes.domain.entities.CoffeeMachine;
-import univ.lab.classes.domain.entities.CoffeeParameters;
-import univ.lab.classes.domain.interfaces.ICoffeeMachineDAO;
+import univ.lab.classes.domain.entities.UserAccount;
+import univ.lab.classes.domain.interfaces.IUserDAO;
 
+import javax.jws.soap.SOAPBinding;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CoffeeMachineDAO implements ICoffeeMachineDAO {
+public class UserDAO implements IUserDAO {
 
     private DataSource _dataSource;
-    private static final String GET_COFFEE_RESERVE =
-            "select coffeeAmount, waterAmount, milkAmount, sugarAmount " +
-                    "from Reserve  " +
+    private static final String GET_USER_ACCOUNT =
+            "select money " +
+                    "from Users  " +
                     "where Id = ?";
-    private static final String UPDATE_COFFEE_MACHINE_RESERVE =
-            "update Reserve " +
-                    "set coffeeAmount = ?, waterAmount = ?, milkAmount = ?, sugarAmount = ? " +
+    private static final String UPDATE_USER_ACCOUNT =
+            "update Users " +
+                    "set money = ?," +
                     "where Id = ?";
 
     public void setDataSource(DataSource dataSource) {
         this._dataSource = dataSource;
     }
 
-    public CoffeeMachine GetCoffeeMachine(int id) {
-        CoffeeMachine result = null;
+    public UserAccount GetUserAccount(int id) {
+        UserAccount result = null;
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement st = null;;
         try {
             con = _dataSource.getConnection();
-            st = con.prepareStatement(GET_COFFEE_RESERVE);
+            st = con.prepareStatement(GET_USER_ACCOUNT);
             st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()) {
-                result = new CoffeeMachine(id);
-                result.set_coffeeAmount(rs.getDouble("coffeeAmount"));
-                result.set_waterAmount(rs.getDouble("waterAmount"));
-                result.set_milkAmount(rs.getDouble("milkAmount"));
-                result.set_sugarAmount(rs.getDouble("sugarAmount"));
+                result = new UserAccount(id);
+                result.set_money(rs.getDouble("money"));
             } else {
-                System.out.println("No CoffeeMachine found with id=" + id);
+                System.out.println("No UserAccount found with id=" + id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,22 +59,19 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
         return result;
     }
 
-    public boolean UpdateCoffeeMachine(int id, CoffeeParameters parameters) {
+    public boolean UpdateUserAccount(int id, double money) {
         boolean result = false;
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = _dataSource.getConnection();
-            ps = con.prepareStatement(UPDATE_COFFEE_MACHINE_RESERVE);
-            ps.setDouble(1, parameters.get_coffeeAmount());
-            ps.setDouble(2, parameters.get_waterAmount());
-            ps.setDouble(3, parameters.get_milkAmount());
-            ps.setDouble(4, parameters.get_sugarAmount());
-            ps.setInt(5, id);
+            ps = con.prepareStatement(UPDATE_USER_ACCOUNT);
+            ps.setDouble(1, money);
+            ps.setInt(2, id);
             int out = ps.executeUpdate();
             if (out != 0) {
                 result = true;
-            } else System.out.println("No CoffeeMachine found with id=" + id);
+            } else System.out.println("No UserAccount found with id=" + id);
         }
         catch(SQLException e){
             e.printStackTrace();

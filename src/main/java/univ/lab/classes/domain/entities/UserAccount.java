@@ -3,6 +3,9 @@ package univ.lab.classes.domain.entities;
 public class UserAccount
 {
     private int _id;
+
+
+
     private double _money;
 
     public UserAccount(int id) {
@@ -22,4 +25,8 @@ public class UserAccount
     public double get_money() {
         return _money;
     }
+
+    public void set_money(double _money) {
+    this._money = _money;
+}
 }
