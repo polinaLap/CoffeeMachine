@@ -12,9 +12,7 @@ import java.util.ArrayList;
 
 public class CoffeeTypeDAO implements ICoffeeTypeDAO {
     private DataSource _dataSource;
-    private static final String GET_COFFEE_TYPE = "select coffeeAmount, waterAmount, " +
-            "milkAmount from CoffeeTypes  where Id = ?";
-    private static final String GET_ALL_COFFEE_TYPES = "select coffeeAmount, waterAmount, " +
+    private static final String GET_ALL_COFFEE_TYPES = "select name, coffeeAmount, waterAmount, " +
             "milkAmount from CoffeeTypes";
 
     public void setDataSource(DataSource dataSource) {

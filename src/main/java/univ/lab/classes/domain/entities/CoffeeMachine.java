@@ -6,8 +6,12 @@ public class CoffeeMachine {
 
     private CoffeeParameters coffeeParameters;
 
-    public CoffeeMachine() {
+
+    private int id;
+
+    public CoffeeMachine(int id) {
         coffeeParameters = new CoffeeParameters();
+        this.id = id;
     }
 
     public boolean AbleToMakeAnyCoffee() {
@@ -36,6 +40,10 @@ public class CoffeeMachine {
 
     public CoffeeParameters getCoffeeParameters() {
         return coffeeParameters;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void set_coffeeAmount(double _coffeeAmount) {

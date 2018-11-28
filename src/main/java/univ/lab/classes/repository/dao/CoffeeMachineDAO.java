@@ -15,17 +15,18 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
     private DataSource _dataSource;
     private static final String GET_COFFEE_RESERVE =
             "select coffeeAmount, waterAmount, milkAmount, sugarAmount " +
-                    "from Reserve";
+                    "from Reserve where id = ?";
     private static final String UPDATE_COFFEE_MACHINE_RESERVE =
             "update Reserve " +
-                    "set coffeeAmount = ?, waterAmount = ?, milkAmount = ?, sugarAmount = ?";
+                    "set coffeeAmount = ?, waterAmount = ?, milkAmount = ?, sugarAmount = ?" +
+                    "where id = ?";
 
     public void setDataSource(DataSource dataSource) {
         this._dataSource = dataSource;
     }
 
     @Override
-    public CoffeeMachine GetCoffeeMachine() {
+    public CoffeeMachine GetCoffeeMachine(int id) {
         CoffeeMachine result = null;
         ResultSet rs = null;
         Connection con = null;
@@ -33,9 +34,10 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
         try {
             con = _dataSource.getConnection();
             st = con.prepareStatement(GET_COFFEE_RESERVE);
+            st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()) {
-                result = new CoffeeMachine();
+                result = new CoffeeMachine(id);
                 result.set_coffeeAmount(rs.getDouble("coffeeAmount"));
                 result.set_waterAmount(rs.getDouble("waterAmount"));
                 result.set_milkAmount(rs.getDouble("milkAmount"));
@@ -58,7 +60,7 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
     }
 
     @Override
-    public boolean UpdateCoffeeMachine(CoffeeParameters parameters) {
+    public boolean UpdateCoffeeMachine(int id, CoffeeParameters parameters) {
         boolean result = false;
         Connection con = null;
         PreparedStatement ps = null;
@@ -69,6 +71,7 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
             ps.setDouble(2, parameters.get_waterAmount());
             ps.setDouble(3, parameters.get_milkAmount());
             ps.setDouble(4, parameters.get_sugarAmount());
+            ps.setDouble(5, id);
             int out = ps.executeUpdate();
             if (out != 0) {
                 result = true;

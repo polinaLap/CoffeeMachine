@@ -26,7 +26,7 @@ public class MakeCoffeeService implements IMakeCoffeeService {
 
         coffeeMachine.MakeCoffee(coffee);
         userAccount.spendMoney(coffee.getPrice());
-        if(!_coffeeMachineRepository.UpdateCoffeeMachine(coffeeMachine.getCoffeeParameters()))
+        if(!_coffeeMachineRepository.UpdateCoffeeMachine(coffeeMachine.getId(), coffeeMachine.getCoffeeParameters()))
             return 0;
         if(!_userRepository.UpdateUserAccount(userAccount))
             return -2;

@@ -1,21 +1,15 @@
 package univ.lab;
 
 import javafx.util.Pair;
-import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import univ.lab.classes.domain.entities.*;
 import univ.lab.classes.domain.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
@@ -33,10 +27,11 @@ public class AppTest {
     @Autowired
     IUserDAO userRepository;
     private int userId = 1;
+    private int coffeeMachineId = 1;
 
     @Test
     public void BuyCoffeeSuccessTest() {
-        CoffeeMachine coffeeMachine = coffeeMachineRepository.GetCoffeeMachine();
+        CoffeeMachine coffeeMachine = coffeeMachineRepository.GetCoffeeMachine(coffeeMachineId);
 
         //getting assortiment
         getAssortimentService.Process(coffeeMachine);
@@ -71,7 +66,7 @@ public class AppTest {
         double eps = 0.01;
         assertTrue("User outcomes should be correct", userBefore.get_money()
                 - userAfter.get_money() - madeCoffee.getPrice() < eps);
-        CoffeeMachine coffeeMachineAfter = coffeeMachineRepository.GetCoffeeMachine();
+        CoffeeMachine coffeeMachineAfter = coffeeMachineRepository.GetCoffeeMachine(coffeeMachineId);
         assertTrue("Coffee machine outcomes should be correct", coffeeMachine.get_coffeeAmount()
                 - coffeeMachineAfter.get_coffeeAmount() - madeCoffee.getCoffeeAmount() < eps);
     }

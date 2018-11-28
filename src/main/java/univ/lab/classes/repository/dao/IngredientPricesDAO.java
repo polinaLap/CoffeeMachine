@@ -15,7 +15,7 @@ public class IngredientPricesDAO implements IIngredientPricesDAO {
     private DataSource _dataSource;
     private static final String GET_ALL_INGREDIENT_PRICES =
             "select name, portionSize, price " +
-                    "from Prices";
+                    "from Ingredients";
 
     public void setDataSource(DataSource dataSource) {
         this._dataSource = dataSource;
