@@ -1,38 +1,78 @@
 package univ.lab;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import javafx.util.Pair;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import univ.lab.classes.domain.entities.*;
+import univ.lab.classes.domain.interfaces.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import static org.junit.Assert.assertTrue;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
-    }
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Dictionary;
+import java.util.Hashtable;
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
+@RunWith(SpringJUnit4ClassRunner.class)
+public class AppTest {
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+    @Autowired
+    IGetAssortimentService getAssortimentService;
+    @Autowired
+    IBuildFullCoffeeService buildFullCoffeeService;
+    @Autowired
+    IMakeCoffeeService makeCoffeeService;
+    @Autowired
+    ICoffeeMachineDAO coffeeMachineRepository;
+    @Autowired
+    IUserDAO userRepository;
+    private int userId = 1;
+
+    @Test
+    public void BuyCoffeeSuccessTest() {
+        CoffeeMachine coffeeMachine = coffeeMachineRepository.GetCoffeeMachine();
+
+        //getting assortiment
+        getAssortimentService.Process(coffeeMachine);
+        getAssortimentService.getCoffeeAssortiment();
+        ArrayList<Coffee> allCoffees = getAssortimentService.getCoffeeAssortiment();
+        ArrayList<Ingredient> additionalIngredients = getAssortimentService.getAdditionalIngredients();
+        assertTrue("Should contain any coffee", !allCoffees.isEmpty());
+        assertTrue("Should contain any adds", !additionalIngredients.isEmpty());
+
+        //build and calculate coffee
+        Coffee chosenCoffee = allCoffees.get(0);
+        Ingredient chosenAdditionalIngredient = additionalIngredients.get(0);
+        Dictionary<String, Pair<Ingredient, Integer>> addsWithPortion = new Hashtable<>();
+        addsWithPortion.put(chosenAdditionalIngredient.getName(), new Pair<>(chosenAdditionalIngredient, 3));
+
+        ICoffee madeCoffee = buildFullCoffeeService.Build(chosenCoffee, addsWithPortion);
+        double cooffeeOutcomes = madeCoffee.getCoffeeAmount();
+        if (chosenAdditionalIngredient.getName().equals(IngredientNames.COFFEE))
+            cooffeeOutcomes += chosenAdditionalIngredient.getPortionSize() * 3;
+        assertTrue("Should count price correctly",
+                madeCoffee.getPrice() == chosenCoffee.getPrice()
+                        + 3 * chosenAdditionalIngredient.getPricePerPortion());
+        assertTrue("Should count coffee outcomes correctly",
+                madeCoffee.getCoffeeAmount() == cooffeeOutcomes);
+
+        //make coffee and save changes
+        UserAccount userBefore = userRepository.GetUserAccount(userId);
+        if (makeCoffeeService.MakeCoffee(madeCoffee, coffeeMachine, userId) != 1)
+            assertTrue("Error during making coffee", false);
+
+        UserAccount userAfter = userRepository.GetUserAccount(userId);
+        double eps = 0.01;
+        assertTrue("User outcomes should be correct", userBefore.get_money()
+                - userAfter.get_money() - madeCoffee.getPrice() < eps);
+        CoffeeMachine coffeeMachineAfter = coffeeMachineRepository.GetCoffeeMachine();
+        assertTrue("Coffee machine outcomes should be correct", coffeeMachine.get_coffeeAmount()
+                - coffeeMachineAfter.get_coffeeAmount() - madeCoffee.getCoffeeAmount() < eps);
     }
 }

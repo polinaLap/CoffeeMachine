@@ -5,57 +5,41 @@ import univ.lab.classes.domain.interfaces.ICoffee;
 public class Coffee implements ICoffee {
     private String _name;
     private double _price;
-    private double _coffeeAmmount;
-    private double _milkAmmount;
+    private double _coffeeAmount;
+    private double _milkAmount;
     private double _waterAmount;
+    private double _sugarAmount;
 
-    public Coffee(String _name, double _price, double _coffeeAmmount, double _milkAmmount, double _waterAmount) {
+    public Coffee(String _name, double _price, double _coffeeAmount, double _milkAmount, double _waterAmount) {
         this._name = _name;
         this._price = _price;
-        this._coffeeAmmount = _coffeeAmmount;
-        this._milkAmmount = _milkAmmount;
+        this._coffeeAmount = _coffeeAmount;
+        this._milkAmount = _milkAmount;
         this._waterAmount = _waterAmount;
+        this._sugarAmount = 0;
     }
 
-    public String get_name() {
+    public String getName() {
         return _name;
-    }
-
-    public void set_name(String _name) {
-        this._name = _name;
     }
 
     public double getPrice() {
         return _price;
     }
 
-    public void set_price(double _price) {
-        this._price = _price;
+    public double getCoffeeAmount() {
+        return _coffeeAmount;
     }
 
-    public double getCoffeeAmmount() {
-        return _coffeeAmmount;
+    public double getMilkAmount() {
+        return _milkAmount;
     }
 
-    public void set_coffeeAmmount(double _coffeeAmmount) {
-        this._coffeeAmmount = _coffeeAmmount;
-    }
-
-    public double getMilkAmmount() {
-        return _milkAmmount;
-    }
-
-    public void set_milkAmmount(double _milkAmmount) {
-        this._milkAmmount = _milkAmmount;
-    }
-
-    public double get_waterAmount() {
+    public double getWaterAmount() {
         return _waterAmount;
     }
 
-    public void set_waterAmount(double _waterAmount) {
-        this._waterAmount = _waterAmount;
+    public double getSugarAmount() {
+        return _sugarAmount;
     }
-
-
 }

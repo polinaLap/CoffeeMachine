@@ -15,18 +15,17 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
     private DataSource _dataSource;
     private static final String GET_COFFEE_RESERVE =
             "select coffeeAmount, waterAmount, milkAmount, sugarAmount " +
-                    "from Reserve  " +
-                    "where Id = ?";
+                    "from Reserve";
     private static final String UPDATE_COFFEE_MACHINE_RESERVE =
             "update Reserve " +
-                    "set coffeeAmount = ?, waterAmount = ?, milkAmount = ?, sugarAmount = ? " +
-                    "where Id = ?";
+                    "set coffeeAmount = ?, waterAmount = ?, milkAmount = ?, sugarAmount = ?";
 
     public void setDataSource(DataSource dataSource) {
         this._dataSource = dataSource;
     }
 
-    public CoffeeMachine GetCoffeeMachine(int id) {
+    @Override
+    public CoffeeMachine GetCoffeeMachine() {
         CoffeeMachine result = null;
         ResultSet rs = null;
         Connection con = null;
@@ -34,16 +33,13 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
         try {
             con = _dataSource.getConnection();
             st = con.prepareStatement(GET_COFFEE_RESERVE);
-            st.setInt(1, id);
             rs = st.executeQuery();
             if (rs.next()) {
-                result = new CoffeeMachine(id);
+                result = new CoffeeMachine();
                 result.set_coffeeAmount(rs.getDouble("coffeeAmount"));
                 result.set_waterAmount(rs.getDouble("waterAmount"));
                 result.set_milkAmount(rs.getDouble("milkAmount"));
                 result.set_sugarAmount(rs.getDouble("sugarAmount"));
-            } else {
-                System.out.println("No CoffeeMachine found with id=" + id);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -61,7 +57,8 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
         return result;
     }
 
-    public boolean UpdateCoffeeMachine(int id, CoffeeParameters parameters) {
+    @Override
+    public boolean UpdateCoffeeMachine(CoffeeParameters parameters) {
         boolean result = false;
         Connection con = null;
         PreparedStatement ps = null;
@@ -72,11 +69,10 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
             ps.setDouble(2, parameters.get_waterAmount());
             ps.setDouble(3, parameters.get_milkAmount());
             ps.setDouble(4, parameters.get_sugarAmount());
-            ps.setInt(5, id);
             int out = ps.executeUpdate();
             if (out != 0) {
                 result = true;
-            } else System.out.println("No CoffeeMachine found with id=" + id);
+            }
         }
         catch(SQLException e){
             e.printStackTrace();

@@ -7,7 +7,6 @@ public class CoffeeType {
     private double _coffeeAmount;
     private double _milkAmount;
     private double _waterAmount;
-    private boolean _waterBeforeMilk;
 
     public String getName() {
         return _name;
@@ -21,8 +20,8 @@ public class CoffeeType {
         return _coffeeAmount;
     }
 
-    public void setCoffeeAmount(double _coffeAmount) {
-        this._coffeeAmount = _coffeAmount;
+    public void setCoffeeAmount(double _coffeeAmount) {
+        this._coffeeAmount = _coffeeAmount;
     }
 
     public double getMilkAmount() {
@@ -39,13 +38,5 @@ public class CoffeeType {
 
     public void setWaterAmount(double _waterAmount) {
         this._waterAmount = _waterAmount;
-    }
-
-    public boolean isWaterBeforeMilk() {
-        return _waterBeforeMilk;
-    }
-
-    public void setWaterBeforeMilk(boolean _waterBeforeMilk) {
-        this._waterBeforeMilk = _waterBeforeMilk;
     }
 }

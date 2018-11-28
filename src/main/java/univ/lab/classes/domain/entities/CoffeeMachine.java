@@ -4,18 +4,10 @@ import univ.lab.classes.domain.interfaces.ICoffee;
 
 public class CoffeeMachine {
 
-    private int id;
     private CoffeeParameters coffeeParameters;
 
-    public CoffeeMachine( int id) {
-        this.id = id;
+    public CoffeeMachine() {
         coffeeParameters = new CoffeeParameters();
-    }
-
-    public ICoffee GetCoffee(CoffeeType type){
-        if(!AbleToMake(type))
-            return null;
-        return null;
     }
 
     public boolean AbleToMakeAnyCoffee() {
@@ -28,8 +20,22 @@ public class CoffeeMachine {
                 && coffeeParameters.get_milkAmount() > type.getMilkAmount();
     }
 
-    public int getId() {
-        return id;
+    public  boolean AbleToMake(ICoffee coffee) {
+        return coffeeParameters.get_coffeeAmount() > coffee.getCoffeeAmount()
+                && coffeeParameters.get_waterAmount() > coffee.getWaterAmount()
+                && coffeeParameters.get_milkAmount() > coffee.getMilkAmount()
+                && coffeeParameters.get_sugarAmount() > coffee.getSugarAmount();
+    }
+
+    public  void MakeCoffee(ICoffee coffee) {
+        set_coffeeAmount(get_coffeeAmount() - coffee.getCoffeeAmount());
+        set_waterAmount(get_waterAmount() - coffee.getWaterAmount());
+        set_milkAmount(get_milkAmount() - coffee.getMilkAmount());
+        set_sugarAmount(get_sugarAmount() - coffee.getSugarAmount());
+    }
+
+    public CoffeeParameters getCoffeeParameters() {
+        return coffeeParameters;
     }
 
     public void set_coffeeAmount(double _coffeeAmount) {
@@ -51,11 +57,16 @@ public class CoffeeMachine {
     public double get_coffeeAmount() {
         return coffeeParameters.get_coffeeAmount();
     }
+
     public double get_milkAmount() {
         return coffeeParameters.get_milkAmount();
-    }public double get_sugarAmount() {
+    }
+
+    public double get_sugarAmount() {
         return coffeeParameters.get_sugarAmount();
-    }public double get_waterAmount() {
+    }
+
+    public double get_waterAmount() {
         return coffeeParameters.get_waterAmount();
     }
 }

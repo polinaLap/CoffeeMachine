@@ -1,7 +1,6 @@
 package univ.lab.classes.repository.dao;
 
 import univ.lab.classes.domain.entities.Ingredient;
-import univ.lab.classes.domain.entities.UserAccount;
 import univ.lab.classes.domain.interfaces.IIngredientPricesDAO;
 
 import javax.sql.DataSource;
@@ -9,8 +8,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
+import java.util.Dictionary;
+import java.util.Hashtable;
 public class IngredientPricesDAO implements IIngredientPricesDAO {
 
     private DataSource _dataSource;
@@ -22,8 +21,9 @@ public class IngredientPricesDAO implements IIngredientPricesDAO {
         this._dataSource = dataSource;
     }
 
-    public ArrayList<Ingredient> getAllIngredients() {
-        ArrayList<Ingredient> result = new ArrayList<Ingredient>();
+    @Override
+    public Dictionary<String, Ingredient> getAllIngredients() {
+        Dictionary<String, Ingredient> result = new Hashtable<>();
         ResultSet rs = null;
         Connection con = null;
         PreparedStatement st = null;;
@@ -36,7 +36,7 @@ public class IngredientPricesDAO implements IIngredientPricesDAO {
                 double portionSize = rs.getDouble("portionSize");
                 double price = rs.getDouble("price");
                 Ingredient ingredient = new Ingredient(ingredientName, portionSize, price);
-                result.add(ingredient);
+                result.put(ingredientName, ingredient);
             } else {
                 System.out.println("Prices are not available.");
             }

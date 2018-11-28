@@ -1,10 +1,8 @@
 package univ.lab.classes.repository.dao;
 
-import univ.lab.classes.domain.entities.CoffeeMachine;
 import univ.lab.classes.domain.entities.UserAccount;
 import univ.lab.classes.domain.interfaces.IUserDAO;
 
-import javax.jws.soap.SOAPBinding;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,6 +25,7 @@ public class UserDAO implements IUserDAO {
         this._dataSource = dataSource;
     }
 
+    @Override
     public UserAccount GetUserAccount(int id) {
         UserAccount result = null;
         ResultSet rs = null;
@@ -59,19 +58,20 @@ public class UserDAO implements IUserDAO {
         return result;
     }
 
-    public boolean UpdateUserAccount(int id, double money) {
+    @Override
+    public boolean UpdateUserAccount(UserAccount userAccount) {
         boolean result = false;
         Connection con = null;
         PreparedStatement ps = null;
         try {
             con = _dataSource.getConnection();
             ps = con.prepareStatement(UPDATE_USER_ACCOUNT);
-            ps.setDouble(1, money);
-            ps.setInt(2, id);
+            ps.setDouble(1, userAccount.get_money());
+            ps.setInt(2, userAccount.get_id());
             int out = ps.executeUpdate();
             if (out != 0) {
                 result = true;
-            } else System.out.println("No UserAccount found with id=" + id);
+            } else System.out.println("No UserAccount found with id=" + userAccount.get_id());
         }
         catch(SQLException e){
             e.printStackTrace();

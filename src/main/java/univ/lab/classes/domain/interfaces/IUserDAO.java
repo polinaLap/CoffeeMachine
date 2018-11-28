@@ -4,5 +4,5 @@ import univ.lab.classes.domain.entities.UserAccount;
 
 public interface IUserDAO {
     UserAccount GetUserAccount(int id);
-    boolean UpdateUserAccount (int id, double money);
+    boolean UpdateUserAccount (UserAccount userAccount);
 }
