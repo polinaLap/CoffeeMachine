@@ -31,14 +31,12 @@ public class IngredientPricesDAO implements IIngredientPricesDAO {
             con = _dataSource.getConnection();
             st = con.prepareStatement(GET_ALL_INGREDIENT_PRICES);
             rs = st.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 String ingredientName = rs.getString("name");
                 double portionSize = rs.getDouble("portionSize");
                 double price = rs.getDouble("price");
                 Ingredient ingredient = new Ingredient(ingredientName, portionSize, price);
                 result.put(ingredientName, ingredient);
-            } else {
-                System.out.println("Prices are not available.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

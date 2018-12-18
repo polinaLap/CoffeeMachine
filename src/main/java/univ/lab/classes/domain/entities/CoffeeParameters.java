@@ -37,4 +37,17 @@ public class CoffeeParameters {
     public void set_waterAmount(double _waterAmount) {
         this._waterAmount = _waterAmount;
     }
+
+    public void set_AnyAmount(String ingredientName, double amount) {
+        switch (ingredientName){
+            case "coffee": set_coffeeAmount(amount);
+            break;
+            case "water": set_waterAmount(amount);
+                break;
+            case "milk": set_milkAmount(amount);
+                break;
+            case "sugar": set_sugarAmount(amount);
+                break;
+        }
+    }
 }

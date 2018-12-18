@@ -18,7 +18,7 @@ public class UserDAO implements IUserDAO {
                     "where Id = ?";
     private static final String UPDATE_USER_ACCOUNT =
             "update Users " +
-                    "set money = ?," +
+                    "set money = ? " +
                     "where Id = ?";
 
     public void setDataSource(DataSource dataSource) {

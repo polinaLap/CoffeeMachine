@@ -7,6 +7,7 @@ import univ.lab.classes.domain.interfaces.IIngredientPricesDAO;
 import univ.lab.classes.domain.interfaces.IGetAssortimentService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Dictionary;
 
 public class GetAssortimentService implements IGetAssortimentService {
@@ -30,7 +31,7 @@ public class GetAssortimentService implements IGetAssortimentService {
         if(availableCoffeeTypes.isEmpty())
             return false;
         Dictionary<String, Ingredient> allIngredients = _ingredientRepository.getAllIngredients();
-        additionalIngredients = (ArrayList<Ingredient>) allIngredients.elements();
+        additionalIngredients = Collections.list(allIngredients.elements());
         coffeeAssortiment = FormCoffeeAssortiment(availableCoffeeTypes, allIngredients);
         return true;
     }
@@ -39,9 +40,9 @@ public class GetAssortimentService implements IGetAssortimentService {
                                                     Dictionary<String, Ingredient> allIngredients) {
         ArrayList<Coffee> result = new ArrayList<>();
         for(CoffeeType coffeeType : availableCoffeeTypes) {
-            Ingredient coffeeIngredient = allIngredients.get(IngredientNames.COFFEE);
-            Ingredient waterIngredient = allIngredients.get(IngredientNames.WATER);
-            Ingredient milkIngredient = allIngredients.get(IngredientNames.MILK);
+            Ingredient coffeeIngredient = allIngredients.get(IngredientNames.coffee.toString());
+            Ingredient waterIngredient = allIngredients.get(IngredientNames.water.toString());
+            Ingredient milkIngredient = allIngredients.get(IngredientNames.milk.toString());
             double price =
                     coffeeIngredient.getPricePerPortion() * coffeeType.getCoffeeAmount() / coffeeIngredient.getPortionSize() +
                             waterIngredient.getPricePerPortion() * coffeeType.getWaterAmount() / waterIngredient.getPortionSize() +
@@ -58,7 +59,7 @@ public class GetAssortimentService implements IGetAssortimentService {
 
     private ArrayList<CoffeeType> SelectAvailableCoffeeTypes(CoffeeMachine coffeeMachine) {
         ArrayList<CoffeeType> allCoffeeTypes = _coffeeTypeRepository.GetAllCoffeeTypes();
-        ArrayList<CoffeeType> availableCoffeeTypes = new ArrayList<CoffeeType>();
+        ArrayList<CoffeeType> availableCoffeeTypes = new ArrayList();
         for(CoffeeType coffeeType: allCoffeeTypes)
         {
             if(coffeeMachine.AbleToMake(coffeeType))

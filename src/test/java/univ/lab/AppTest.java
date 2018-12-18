@@ -3,6 +3,7 @@ package univ.lab;
 import javafx.util.Pair;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
 import univ.lab.classes.domain.entities.*;
 import univ.lab.classes.domain.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.Dictionary;
 import java.util.Hashtable;
 
 @RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations ="classpath:spring.xml")
 public class AppTest {
 
     @Autowired
@@ -26,8 +28,9 @@ public class AppTest {
     ICoffeeMachineDAO coffeeMachineRepository;
     @Autowired
     IUserDAO userRepository;
-    private int userId = 1;
-    private int coffeeMachineId = 1;
+    private static int userId = 1;
+    private static int coffeeMachineId = 1;
+    private static double eps = 0.01;
 
     @Test
     public void BuyCoffeeSuccessTest() {
@@ -35,7 +38,6 @@ public class AppTest {
 
         //getting assortiment
         getAssortimentService.Process(coffeeMachine);
-        getAssortimentService.getCoffeeAssortiment();
         ArrayList<Coffee> allCoffees = getAssortimentService.getCoffeeAssortiment();
         ArrayList<Ingredient> additionalIngredients = getAssortimentService.getAdditionalIngredients();
         assertTrue("Should contain any coffee", !allCoffees.isEmpty());
@@ -49,13 +51,14 @@ public class AppTest {
 
         ICoffee madeCoffee = buildFullCoffeeService.Build(chosenCoffee, addsWithPortion);
         double cooffeeOutcomes = madeCoffee.getCoffeeAmount();
-        if (chosenAdditionalIngredient.getName().equals(IngredientNames.COFFEE))
+        if (chosenAdditionalIngredient.getName().equals(IngredientNames.coffee.toString()))
             cooffeeOutcomes += chosenAdditionalIngredient.getPortionSize() * 3;
+
         assertTrue("Should count price correctly",
-                madeCoffee.getPrice() == chosenCoffee.getPrice()
-                        + 3 * chosenAdditionalIngredient.getPricePerPortion());
+                Math.abs(madeCoffee.getPrice() - chosenCoffee.getPrice()
+                        - 3 * chosenAdditionalIngredient.getPricePerPortion()) < eps);
         assertTrue("Should count coffee outcomes correctly",
-                madeCoffee.getCoffeeAmount() == cooffeeOutcomes);
+                Math.abs(madeCoffee.getCoffeeAmount() - cooffeeOutcomes)<eps);
 
         //make coffee and save changes
         UserAccount userBefore = userRepository.GetUserAccount(userId);
@@ -63,7 +66,6 @@ public class AppTest {
             assertTrue("Error during making coffee", false);
 
         UserAccount userAfter = userRepository.GetUserAccount(userId);
-        double eps = 0.01;
         assertTrue("User outcomes should be correct", userBefore.get_money()
                 - userAfter.get_money() - madeCoffee.getPrice() < eps);
         CoffeeMachine coffeeMachineAfter = coffeeMachineRepository.GetCoffeeMachine(coffeeMachineId);

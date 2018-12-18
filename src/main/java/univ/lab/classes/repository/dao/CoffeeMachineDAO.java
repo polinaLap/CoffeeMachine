@@ -18,7 +18,7 @@ public class CoffeeMachineDAO implements ICoffeeMachineDAO {
                     "from Reserve where id = ?";
     private static final String UPDATE_COFFEE_MACHINE_RESERVE =
             "update Reserve " +
-                    "set coffeeAmount = ?, waterAmount = ?, milkAmount = ?, sugarAmount = ?" +
+                    "set coffeeAmount = ?, waterAmount = ?, milkAmount = ?, sugarAmount = ? " +
                     "where id = ?";
 
     public void setDataSource(DataSource dataSource) {

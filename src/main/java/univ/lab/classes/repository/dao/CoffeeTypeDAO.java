@@ -29,15 +29,13 @@ public class CoffeeTypeDAO implements ICoffeeTypeDAO {
             con = _dataSource.getConnection();
             st = con.prepareStatement(GET_ALL_COFFEE_TYPES);
             rs = st.executeQuery();
-            if (rs.next()) {
+            while (rs.next()) {
                 CoffeeType coffeeType = new CoffeeType();
                 coffeeType.setName(rs.getString("name"));
                 coffeeType.setWaterAmount(rs.getDouble("waterAmount"));
                 coffeeType.setMilkAmount(rs.getDouble("milkAmount"));
                 coffeeType.setCoffeeAmount(rs.getDouble("coffeeAmount"));
                 result.add(coffeeType);
-            } else {
-                System.out.println("No CoffeeTypes found");
             }
         } catch (SQLException e) {
             e.printStackTrace();
